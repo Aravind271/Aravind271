@@ -1,22 +1,13 @@
-# Run Lynx City on macOS
+# Run Lynx City V2 on macOS
 
-1. Install Unity Hub.
-2. Install Unity **6.0 LTS**. This project was created with **6000.0.65f1**. If Hub offers a newer Unity 6.0.x LTS patch instead, it should be able to upgrade the project; make a backup before upgrading.
-3. In Unity Hub, ensure the editor installation includes **Mac Build Support**.
-4. Download/extract the project and select the folder named `LynxCity_Mac_Unity6` in Unity Hub using **Add/Open project from disk**.
-5. Let Unity finish importing packages. The project uses the Unity Input System package.
-6. Open `Assets/LynxCity/Scenes/LynxCity_Main.unity`. If it is not visible yet, use the editor menu **Lynx City > Open Main Scene**; the setup script creates it automatically.
-7. Press the triangular **Play** button at the top of the Unity Editor.
+1. Install Unity Hub and Unity 6.0 LTS (project version 6000.0.65f1).
+2. In Unity Hub choose **Add project from disk** and select the `LynxCity_Mac_Unity6` folder.
+3. Wait for packages and scripts to import.
+4. Choose **Lynx City → Open Main Scene**.
+5. Press Play.
 
-## Keyboard controls
-- WASD — move
-- Left Shift — sprint
-- Hold right mouse + move mouse — camera
-- Left mouse — light combo
-- Right mouse — heavy attack
-- Space — dodge
-- Q — special attack when the meter is high enough
-- E — interact / talk / shop / taxi / date / karaoke
+V2 generates the late-1980s/early-1990s prototype world at runtime.
 
-## Build a standalone Mac app
-Use **Lynx City > Build macOS** or Unity's Build Profiles. On an M-series Mac, select Apple Silicon. The output helper writes `Builds/LynxCity.app`.
+Test: WASD + mouse; C then 1–5 for wardrobe; E near citizens/shops/taxis; LMB/RMB/F/R/Space/Tab/Q for combat.
+
+To build a Mac app choose **Lynx City → Build → Desktop → macOS**. Windows and Linux build entries are included too; install their Unity Build Support modules before building those targets.

@@ -8,101 +8,19 @@ namespace LynxCity.Combat
 {
     public class BrawlerCombat : MonoBehaviour
     {
-        public float hitRadius = 1.15f;
-        public float hitReach = 1.25f;
-        public LayerMask hittableMask = ~0;
-        public float dodgeDistance = 3.5f;
-        public float heatActionCost = 45f;
-        int comboIndex;
-        float lastAttackTime;
-        bool busy;
-        LynxMotor motor;
-
-        readonly float[] lightDamage = { 8f, 9f, 11f, 16f };
-
-        void Awake() => motor = GetComponent<LynxMotor>();
-
-        void Update()
-        {
-            if (busy) return;
-            bool light = (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame) || (Gamepad.current != null && Gamepad.current.buttonWest.wasPressedThisFrame);
-            bool heavy = (Mouse.current != null && Mouse.current.rightButton.wasPressedThisFrame && (Keyboard.current == null || !Keyboard.current.leftAltKey.isPressed)) || (Gamepad.current != null && Gamepad.current.buttonNorth.wasPressedThisFrame);
-            bool dodge = (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame) || (Gamepad.current != null && Gamepad.current.buttonEast.wasPressedThisFrame);
-            bool heat = (Keyboard.current != null && Keyboard.current.qKey.wasPressedThisFrame) || (Gamepad.current != null && Gamepad.current.rightShoulder.wasPressedThisFrame);
-
-            if (light) StartCoroutine(LightAttack());
-            else if (heavy) StartCoroutine(HeavyAttack());
-            else if (dodge) StartCoroutine(Dodge());
-            else if (heat) StartCoroutine(HeatAction());
-        }
-
-        IEnumerator LightAttack()
-        {
-            busy = true;
-            if (Time.time - lastAttackTime > 0.85f) comboIndex = 0;
-            float dmg = lightDamage[comboIndex];
-            comboIndex = (comboIndex + 1) % lightDamage.Length;
-            lastAttackTime = Time.time;
-            yield return new WaitForSeconds(0.11f);
-            Hit(dmg, 4f);
-            GameState.Instance?.AddHeat(4.5f);
-            yield return new WaitForSeconds(0.22f);
-            busy = false;
-        }
-
-        IEnumerator HeavyAttack()
-        {
-            busy = true;
-            yield return new WaitForSeconds(0.24f);
-            Hit(24f, 9f);
-            GameState.Instance?.AddHeat(7f);
-            yield return new WaitForSeconds(0.42f);
-            busy = false;
-        }
-
-        IEnumerator Dodge()
-        {
-            busy = true;
-            motor.ControlsLocked = true;
-            float t = 0f;
-            Vector3 start = transform.position;
-            Vector3 end = start + transform.forward * dodgeDistance;
-            while (t < 0.18f)
-            {
-                t += Time.deltaTime;
-                var cc = GetComponent<CharacterController>();
-                cc.Move((end - transform.position) * Mathf.Min(1f, Time.deltaTime * 15f));
-                yield return null;
-            }
-            motor.ControlsLocked = false;
-            busy = false;
-        }
-
-        IEnumerator HeatAction()
-        {
-            if (GameState.Instance == null || !GameState.Instance.SpendHeat(heatActionCost)) yield break;
-            busy = true;
-            yield return new WaitForSeconds(0.18f);
-            Hit(55f, 16f);
-            yield return new WaitForSeconds(0.75f);
-            busy = false;
-        }
-
-        void Hit(float damage, float impulse)
-        {
-            Vector3 center = transform.position + Vector3.up * 1.1f + transform.forward * hitReach;
-            foreach (var col in Physics.OverlapSphere(center, hitRadius, hittableMask, QueryTriggerInteraction.Ignore))
-            {
-                if (col.transform.root == transform.root) continue;
-                var health = col.GetComponentInParent<Health>();
-                if (health != null)
-                {
-                    health.Damage(damage);
-                    var rb = col.attachedRigidbody;
-                    if (rb != null) rb.AddForce(transform.forward * impulse, ForceMode.VelocityChange);
-                    break;
-                }
-            }
-        }
+        public float hitRadius=1f,hitReach=1f,dodgeDistance=2.7f,heatActionCost=45f,lockRange=9f;public Transform LockedTarget{get;private set;}public bool Guarding{get;private set;}int comboIndex;float lastAttackTime;bool busy;LynxMotor motor;Health health;readonly float[] lightDamage={7f,8f,10f,15f};
+        void Awake(){motor=GetComponent<LynxMotor>();health=GetComponent<Health>();}
+        void Update(){var kb=Keyboard.current;var mouse=Mouse.current;var pad=Gamepad.current;Guarding=!busy&&((kb!=null&&kb.fKey.isPressed)||(pad!=null&&pad.leftShoulder.isPressed));if(kb!=null&&kb.tabKey.wasPressedThisFrame)ToggleLock();if(LockedTarget){if(Vector3.Distance(transform.position,LockedTarget.position)>lockRange||!LockedTarget.gameObject.activeInHierarchy)LockedTarget=null;else{Vector3 d=LockedTarget.position-transform.position;d.y=0;if(d.sqrMagnitude>.05f)transform.rotation=Quaternion.Slerp(transform.rotation,Quaternion.LookRotation(d),Time.deltaTime*12f);}}if(busy||Guarding)return;bool light=(mouse!=null&&mouse.leftButton.wasPressedThisFrame)||(pad!=null&&pad.buttonWest.wasPressedThisFrame);bool heavy=(mouse!=null&&mouse.rightButton.wasPressedThisFrame)||(pad!=null&&pad.buttonNorth.wasPressedThisFrame);bool dodge=(kb!=null&&kb.spaceKey.wasPressedThisFrame)||(pad!=null&&pad.buttonEast.wasPressedThisFrame);bool heat=(kb!=null&&kb.qKey.wasPressedThisFrame)||(pad!=null&&pad.rightShoulder.wasPressedThisFrame);bool grab=(kb!=null&&kb.rKey.wasPressedThisFrame)||(pad!=null&&pad.buttonSouth.wasPressedThisFrame);if(light)StartCoroutine(LightAttack());else if(heavy)StartCoroutine(HeavyAttack());else if(dodge)StartCoroutine(Dodge());else if(grab)StartCoroutine(GrabThrow());else if(heat)StartCoroutine(HeatAction());}
+        public void ReceiveEnemyHit(float damage){if(Guarding){health?.Damage(damage*.18f);GameState.Instance?.AddHeat(1.5f);}else health?.Damage(damage);}
+        IEnumerator LightAttack(){busy=true;if(Time.time-lastAttackTime>.8f)comboIndex=0;float dmg=lightDamage[comboIndex];int pose=comboIndex;comboIndex=(comboIndex+1)%lightDamage.Length;lastAttackTime=Time.time;yield return PoseAttack(pose,false,.10f);Hit(dmg,3.2f,.16f);GameState.Instance?.AddHeat(4f);yield return new WaitForSeconds(.15f);ResetPose();busy=false;}
+        IEnumerator HeavyAttack(){busy=true;yield return PoseAttack(3,true,.22f);Hit(23f,8.5f,.42f);GameState.Instance?.AddHeat(7f);yield return new WaitForSeconds(.28f);ResetPose();busy=false;}
+        IEnumerator GrabThrow(){busy=true;var enemy=NearestEnemy(1.75f);if(enemy){Face(enemy.transform);yield return new WaitForSeconds(.15f);enemy.ReceiveHit(18f,11f,.85f);GameState.Instance?.AddHeat(9f);}yield return new WaitForSeconds(.35f);ResetPose();busy=false;}
+        IEnumerator Dodge(){busy=true;motor.ControlsLocked=true;float t=0f;Vector3 dir=motor.DesiredMove.sqrMagnitude>.05f?motor.DesiredMove.normalized:-transform.forward;var cc=GetComponent<CharacterController>();while(t<.18f){t+=Time.deltaTime;cc.Move(dir*dodgeDistance/.18f*Time.deltaTime);yield return null;}motor.ControlsLocked=false;busy=false;}
+        IEnumerator HeatAction(){if(GameState.Instance==null||!GameState.Instance.SpendHeat(heatActionCost))yield break;busy=true;var enemy=NearestEnemy(2.25f);if(enemy)Face(enemy.transform);yield return PoseAttack(4,true,.28f);Hit(52f,15f,1f);yield return new WaitForSeconds(.48f);ResetPose();busy=false;}
+        void Hit(float damage,float impulse,float stagger){Vector3 center=transform.position+Vector3.up*1.05f+transform.forward*hitReach;StreetEnemy best=null;float bestD=float.MaxValue;foreach(var col in Physics.OverlapSphere(center,hitRadius,~0,QueryTriggerInteraction.Ignore)){if(col.transform.root==transform.root)continue;var e=col.GetComponentInParent<StreetEnemy>();if(e==null)continue;float d=(e.transform.position-transform.position).sqrMagnitude;if(d<bestD){bestD=d;best=e;}}if(best)best.ReceiveHit(damage,impulse,stagger);}
+        StreetEnemy NearestEnemy(float range){StreetEnemy best=null;float bestD=range*range;foreach(var e in Object.FindObjectsByType<StreetEnemy>(FindObjectsSortMode.None)){if(!e||e.IsDefeated)continue;float d=(e.transform.position-transform.position).sqrMagnitude;if(d<bestD){bestD=d;best=e;}}return best;}
+        void ToggleLock(){if(LockedTarget){LockedTarget=null;return;}var e=NearestEnemy(lockRange);if(e)LockedTarget=e.transform;}void Face(Transform t){Vector3 d=t.position-transform.position;d.y=0;if(d.sqrMagnitude>.01f)transform.rotation=Quaternion.LookRotation(d);}
+        IEnumerator PoseAttack(int index,bool heavy,float windup){var v=transform.Find("Visual");if(!v){yield return new WaitForSeconds(windup);yield break;}var ra=v.Find("RightArm");var la=v.Find("LeftArm");if(ra)ra.localRotation=Quaternion.Euler(heavy?-95f:-65f,0,index%2==0?18f:-12f);if(la)la.localRotation=Quaternion.Euler(index%2==0?28f:-45f,0,-10f);yield return new WaitForSeconds(windup);if(ra)ra.localRotation=Quaternion.Euler(heavy?70f:55f,0,-8f);}
+        void ResetPose(){var v=transform.Find("Visual");if(!v)return;var ra=v.Find("RightArm");var la=v.Find("LeftArm");if(ra)ra.localRotation=Quaternion.Euler(0,0,5);if(la)la.localRotation=Quaternion.Euler(0,0,-5);}
     }
 }
