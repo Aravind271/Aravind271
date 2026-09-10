@@ -1,28 +1,26 @@
 # Hi, I'm Aravind 👋
 
-I'm an incoming Master's student at the **University of Aizu, Japan**, building my foundations in computer networking, Linux, programming, and cybersecurity.
+I'm an incoming Master's student at the **University of Aizu, Japan**, currently building strong foundations in computer networking, Linux, programming, and cybersecurity.
 
-My long-term goal is to work in **Network Engineering / Cybersecurity**, with particular interest in security operations, network security, cloud infrastructure, and open-source technologies.
+My long-term goal is to build a career in **Network Engineering and Cybersecurity**, with particular interest in security operations, network security, cloud infrastructure, and open-source technologies.
 
 ## 🌱 Currently Learning
 
-* C programming
-* Computer networking fundamentals
-* Linux fundamentals
+* C Programming
+* Computer Networking Fundamentals
+* Linux Fundamentals
 * Git & GitHub
 * Japanese for everyday life and work
 
 ## 🎯 Current Focus
 
-I'm currently focusing on understanding the fundamentals properly rather than rushing through technologies.
+I'm focusing on understanding the fundamentals properly and developing practical skills through hands-on learning.
 
-My learning path is:
+My current learning path is:
 
-`Networking → Linux → Python → Cybersecurity → Cloud → Open Source`
+**Networking → Linux → Python → Cybersecurity → Cloud → Open Source**
 
-I plan to document what I learn through small projects and practical labs.
-
-## 🔐 Areas I'm Interested In
+## 🔐 Areas of Interest
 
 * Network Engineering
 * Cybersecurity
@@ -32,25 +30,24 @@ I plan to document what I learn through small projects and practical labs.
 * Cloud & Infrastructure
 * Open Source
 
-## 🛠️ Projects
+## 🛠️ Building
 
-I'm currently building my foundations. Projects will be added here as I complete them.
+I'm currently working toward small practical projects in:
 
-Planned projects include:
-
-* Networking Fundamentals Lab
-* Linux Practice Lab
+* C Programming
+* Networking Fundamentals
+* Linux
 * Wireshark Network Analysis
 * Python Networking Tools
-* Beginner SOC / SIEM Home Lab
+* SOC / SIEM Home Labs
 * Open-Source Contributions
 
-## 🚀 2027 Goal
+## 🚀 Current Goal
 
-My goal is to become capable of contributing to real open-source projects and apply for programs such as **LFX Mentorship**, while also pursuing networking, infrastructure, and cybersecurity internships.
+My goal is to become capable of contributing to real open-source projects and pursue opportunities such as **LFX Mentorship**, while building toward networking and cybersecurity internships.
 
-## 🤝 Let's Connect
+## 🤝 Connect
 
-I'm interested in connecting with students, developers, security professionals, open-source contributors, and mentors working in networking, Linux, cloud infrastructure, and cybersecurity.
+I'm interested in connecting with students, engineers, security professionals, open-source contributors, and mentors working in networking, Linux, cloud infrastructure, and cybersecurity.
 
-Always learning. One step at a time.
+**Learning consistently. Building one step at a time.**
