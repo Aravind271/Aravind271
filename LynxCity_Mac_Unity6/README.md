@@ -1,57 +1,39 @@
-# Lynx City — V2 Foundation
+# Lynx City — V2.1 Character Lab (native macOS / Apple Silicon)
 
-**Unity 6 cross-platform Japanese university-life / street-brawler prototype**
+V2.1 deliberately stops expanding the open world. This build concentrates on **Lynx**, the Japanese university-student protagonist, before city production resumes.
 
-Lynx is a Japanese university student living through an original late-1980s / early-1990s Japanese city. V2 moves away from the capsule-only greybox and establishes the game's art direction, character customization, era-specific street dressing, denser Japanese crowds, improved combat controls, and scalable desktop performance.
+## What V2.1 adds
+- Native macOS-only project policy for Apple Silicon.
+- Metal-only standalone rendering configuration.
+- IL2CPP Release scripting backend for native builds.
+- Linear color space and a stable 60 fps runtime target.
+- A new articulated Lynx authoring model with a real joint hierarchy instead of the old block mannequin.
+- More readable face construction: head/jaw, eyes/irises/pupils, brows, ears, nose, lips and layered black hair.
+- More natural procedural idle/walk/run movement with hips, knees, arms, elbows, torso sway and breathing.
+- Five genuinely different 1989–1992 outfits, with silhouette/details rather than only recoloring one outfit.
+- Persistent wardrobe choice.
+- Close wardrobe camera plus Q/E character rotation.
+- Smoother acceleration/deceleration and improved orbit/zoom camera.
+- A small early-Heisei character lab environment designed to inspect Lynx without hiding him behind unfinished city systems.
+- A production FBX import/validation slot for the final realistic hero model.
 
-> This project is an original game. It can use the broad cinematic Japanese street-brawler genre as inspiration, but it must not copy Yakuza/Like a Dragon maps, characters, animations, UI, music, dialogue, story, logos, or proprietary combat implementation.
+## Important art status
+The V2.1 generated character is a **higher-quality authoring fallback**, not the final photorealistic publishable Japanese face. A truly publishable hero requires a proper sculpted/rigged character asset. The project now has the correct production slot and import contract for that asset so we do not rewrite gameplay when it arrives.
 
-## What V2 adds
+## Run
+Use Unity **6000.0.65f1** on macOS.
 
-- Proportioned human-shaped Lynx prototype instead of a single capsule.
-- Lynx is an original Japanese male university-student character.
-- Wardrobe/customization system with 5 era-inspired attire presets.
-- Human-shaped Japanese crowd population with varied height and clothing.
-- Original 1989 Shinjuku-inspired entertainment district.
-- Original 1992 Shibuya-inspired station/shopping district.
-- 1991 Aizu-inspired countryside travel area.
-- Late-Showa / early-Heisei street props: roads, storefronts, awnings, lamps, vending machines, public phone booth, bicycles, crosswalks and older low-rise buildings.
-- Convenience store, restaurant, bicycle shop, department store, university, dating NPC, karaoke and taxi interactions.
-- Revised brawler controls: 4-hit light chain, heavy hit, guard, grab/throw, dodge, target lock and Heat-style special action.
-- Mouse camera no longer conflicts with heavy attack.
-- Automatic performance budget with 60 FPS target and crowd/shadow scaling.
-- Build menu entries for macOS, Windows x64 and Linux x64.
+1. Add this folder to Unity Hub.
+2. Open it.
+3. Choose `Lynx City > V2.1 > Open Character Lab`.
+4. Press Play.
 
-## Controls
+Controls: WASD move, Shift run, mouse orbit, mouse wheel zoom, C wardrobe, Left/Right or 1–5 outfit, Q/E rotate while wardrobe is open, Esc cursor.
 
-| Action | Keyboard / Mouse |
-|---|---|
-| Move | WASD |
-| Sprint | Left Shift |
-| Camera | Mouse |
-| Light combo | Left Mouse |
-| Heavy | Right Mouse |
-| Guard | F |
-| Grab / throw | R |
-| Dodge | Space |
-| Lock target | Tab |
-| Special / Heat action | Q |
-| Interact | E |
-| Wardrobe | C, then 1–5 |
-| Release mouse cursor | Esc |
+## Native Apple Silicon build
+Choose `Lynx City > macOS > Build Native Apple Silicon`.
 
-## Character attire presets
+The editor script forces ARM64, Metal only, IL2CPP Release and a macOS `.app` build. Output: `Builds/macOS-AppleSilicon/Lynx City.app`.
 
-1. Campus Casual '91
-2. Denim Street '88
-3. Varsity Night '90
-4. Smart Date '93
-5. Leather Weekend '89
-
-## Important visual note
-
-V2 still uses **procedurally assembled placeholder geometry** for the bodies, faces, clothes and architecture. It is deliberately much more human and era-specific than V1, but it is **not yet photorealistic**. A genuinely realistic Japanese face requires a licensed/original rigged humanoid mesh, facial textures, hair cards, skin shader, blendshapes and animation assets. The code is structured so those assets can replace the procedural `Visual` object later without rewriting game logic.
-
-The project is no longer macOS-only. Development should stay comfortable on Apple Silicon by using a scalable pipeline: 1080p/60 as the gameplay target, pooled crowds, LODs, occlusion, baked lighting where appropriate, texture budgets, and a Quality/Balanced/Performance tier. For production-quality visuals, the preferred direction is URP for balancing quality with macOS/Windows/Linux portability.
-
-Open the project in Unity 6, choose **Lynx City → Open Main Scene**, then press Play. Desktop builds are under **Lynx City → Build → Desktop**.
+## Development rule
+Do not resume Shibuya/Shinjuku/crowd/combat feature expansion until the hero character passes the V2.1 visual and locomotion acceptance bar in `Docs/V2_1_CHARACTER_SPEC.md`.
